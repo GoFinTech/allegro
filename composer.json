@@ -1,0 +1,25 @@
+{
+  "name": "gofintech/allegro",
+  "description": "Reduced PHP framework based on Symfony components",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Antanas Kompanas",
+      "email": "a.kompanas@gofintech.lt"
+    }
+  ],
+  "require": {
+    "php": ">=7.2",
+    "symfony/dependency-injection": "^4.0",
+    "symfony/yaml": "^4.0",
+    "symfony/config": "^4.0",
+    "gofintech/serializer": "^1.2",
+    "psr/log": "^1.1",
+    "indigophp/doctrine-annotation-autoload": "^0.1.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "GoFinTech\\Allegro\\": "src/"
+    }
+  }
+}

@@ -1,0 +1,27 @@
+# Service definitions
+
+services:
+
+  Symfony\Component\Serializer\SerializerInterface:
+    class: Symfony\Component\Serializer\Serializer
+    factory: GoFinTech\Serializer\SerializerFactory::create
+
+  Symfony\Component\Validator\Validator\ValidatorInterface:
+    class: Symfony\Component\Validator\Validator\ValidatorInterface
+    factory: GoFinTech\Serializer\ValidatorFactory::create
+
+  Psr\Log\LoggerInterface:
+    class: GoFinTech\Allegro\Implementation\ConsoleLogger
+
+  serializer:
+    alias: Symfony\Component\Serializer\SerializerInterface
+    public: true
+
+  validator:
+    alias: Symfony\Component\Validator\Validator\ValidatorInterface
+    public: true
+
+  logger:
+    alias: Psr\Log\LoggerInterface
+    public: true
+
