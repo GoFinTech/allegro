@@ -22,8 +22,14 @@ use Throwable;
  */
 class ConsoleLogger extends AbstractLogger
 {
+    private $STDERR;
     /** @var bool */
     private $forceStdErr;
+
+    public function __construct()
+    {
+        $this->STDERR = fopen('php://stderr', 'w');
+    }
 
     /**
      * Forces all output to go on STDERR, not only the WARNING and above
@@ -73,7 +79,7 @@ class ConsoleLogger extends AbstractLogger
         }
 
         if ($outputToStdErr) {
-            fwrite(STDERR, $msg);
+            fwrite($this->STDERR, $msg);
         }
         else {
             echo $msg;
