@@ -176,7 +176,9 @@ class AllegroApp
         $builder = new ContainerBuilder();
         $loader = new YamlFileLoader($builder, $locator);
 
-        $configFile = getenv('ALLEGRO_ENV_CONFIG') ?? 'config.yml';
+        $configFile = getenv('ALLEGRO_ENV_CONFIG');
+        if (empty($configFile))
+            $configFile = 'config.yml';
 
         $loader->load('allegro.yml');
         $loader->load($configFile);
