@@ -194,7 +194,7 @@ class AllegroApp
     public function compile(): void
     {
         $this->installSigTermHandler();
-        $this->container->compile();
+        $this->container->compile(true);
     }
 
     /**
