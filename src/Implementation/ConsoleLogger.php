@@ -22,6 +22,17 @@ use Throwable;
  */
 class ConsoleLogger extends AbstractLogger
 {
+    /** @var bool */
+    private $forceStdErr;
+
+    /**
+     * Forces all output to go on STDERR, not only the WARNING and above
+     * @param bool $force
+     */
+    public function setForceOutputToStdErr(bool $force): void
+    {
+        $this->forceStdErr = $force;
+    }
 
     /**
      * Logs with an arbitrary level.
@@ -45,15 +56,27 @@ class ConsoleLogger extends AbstractLogger
             $msg = "$lvl$message\n";
         }
 
-        switch ($level) {
-            case LogLevel::NOTICE:
-            case LogLevel::INFO:
-            case LogLevel::DEBUG:
-                echo $msg;
-                break;
-            default:
-                fwrite(STDERR, $msg);
-                break;
+        if ($this->forceStdErr) {
+            $outputToStdErr = true;
+        }
+        else {
+            switch ($level) {
+                case LogLevel::NOTICE:
+                case LogLevel::INFO:
+                case LogLevel::DEBUG:
+                    $outputToStdErr = false;
+                    break;
+                default:
+                    $outputToStdErr = true;
+                    break;
+            }
+        }
+
+        if ($outputToStdErr) {
+            fwrite(STDERR, $msg);
+        }
+        else {
+            echo $msg;
         }
     }
 

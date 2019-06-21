@@ -1,5 +1,8 @@
 # Service definitions
 
+parameters:
+  allegro.console_logger.force_stderr: false
+
 services:
 
   Symfony\Component\Serializer\SerializerInterface:
@@ -12,6 +15,9 @@ services:
 
   Psr\Log\LoggerInterface:
     class: GoFinTech\Allegro\Implementation\ConsoleLogger
+    calls:
+      - method: setForceOutputToStdErr
+        arguments: ['%allegro.console_logger.force_stderr%']
 
   serializer:
     alias: Symfony\Component\Serializer\SerializerInterface
