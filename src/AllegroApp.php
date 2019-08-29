@@ -51,7 +51,6 @@ class AllegroApp
             $this->appDir = $this->findApplicationDir();
             $this->configLocator = new FileLocator(["{$this->appDir}/config", $this->appDir]);
             $this->container = $this->loadServiceDefinitions($this->configLocator);
-            $this->container->compile();
         }
         catch (RuntimeException $ex) {
             throw $ex;
