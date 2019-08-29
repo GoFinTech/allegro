@@ -79,6 +79,18 @@ class AllegroApp
     }
 
     /**
+     * Returns configuration parameter value.
+     * Shorthand for getContainer()->getParameter($name).
+     *
+     * @param string $name Parameter name
+     * @return mixed Parameter value
+     */
+    public function getParameter(string $name)
+    {
+        return $this->container->getParameter($name);
+    }
+
+    /**
      * Returns locator for loading additional configuration.
      * Mainly useful for Allegro extensions.
      *
