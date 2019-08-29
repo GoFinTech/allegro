@@ -51,6 +51,7 @@ class AllegroApp
             $this->appDir = $this->findApplicationDir();
             $this->configLocator = new FileLocator(["{$this->appDir}/config", $this->appDir]);
             $this->container = $this->loadServiceDefinitions($this->configLocator);
+            $this->container->compile();
         }
         catch (RuntimeException $ex) {
             throw $ex;
@@ -80,14 +81,18 @@ class AllegroApp
 
     /**
      * Returns configuration parameter value.
-     * Shorthand for getContainer()->getParameter($name).
+     * Makes sure the parameter placeholders are resolved.
      *
      * @param string $name Parameter name
      * @return mixed Parameter value
      */
     public function getParameter(string $name)
     {
-        return $this->container->getParameter($name);
+        $value = $this->container->getParameter($name);
+        if ($this->container->isCompiled() || strpos($value, '%') === false)
+            return $value;
+        else
+            return $this->container->resolveEnvPlaceholders($value, true);
     }
 
     /**
