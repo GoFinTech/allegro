@@ -89,7 +89,7 @@ class AllegroApp
     public function getParameter(string $name)
     {
         $value = $this->container->getParameter($name);
-        if ($this->container->isCompiled() || strpos($value, '%') === false)
+        if ($this->container->isCompiled())
             return $value;
         else
             return $this->container->resolveEnvPlaceholders($value, true);
