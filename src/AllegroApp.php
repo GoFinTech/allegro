@@ -196,6 +196,8 @@ class AllegroApp
         if (empty($configFile))
             $configFile = 'config.yml';
 
+        $builder->setParameter('allegro.appDir', $this->appDir);
+        
         $loader->load('allegro.yml');
         $loader->load($configFile);
         $loader->load('vendor/gofintech/allegro/config/services.yml');
