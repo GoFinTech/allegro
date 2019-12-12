@@ -16,6 +16,7 @@ use Exception;
 use GoFinTech\Allegro\Implementation\ConsoleLogger;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
+use Symfony\Component\Config\Exception\FileLocatorFileNotFoundException;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -193,13 +194,23 @@ class AllegroApp
         $loader = new YamlFileLoader($builder, $locator);
 
         $configFile = getenv('ALLEGRO_ENV_CONFIG');
-        if (empty($configFile))
+        $configFileRequired = true;
+
+        if (empty($configFile)) {
             $configFile = 'config.yml';
+            $configFileRequired = false;
+        }
 
         $builder->setParameter('allegro.appDir', $this->appDir);
         
         $loader->load('allegro.yml');
-        $loader->load($configFile);
+        try {
+            $loader->load($configFile);
+        }
+        catch (FileLocatorFileNotFoundException $ex) {
+            if ($configFileRequired)
+                throw $ex;
+        }
         $loader->load('vendor/gofintech/allegro/config/services.yml');
         $loader->load('services.yml');
 
