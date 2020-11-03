@@ -3,7 +3,7 @@
 /*
  * This file is part of the Allegro framework.
  *
- * (c) 2019 Go Financial Technologies, JSC
+ * (c) 2019,2020 Go Financial Technologies, JSC
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -254,5 +254,33 @@ class AllegroApp
     public function ping(): void
     {
         touch('/tmp/allegro.ping');
+    }
+
+    /**
+     * Common check for known but often overlooked errors
+     * that do not self-correct.
+     *
+     * For use in main loops that suppress runtime exceptions
+     * for performance reasons.
+     *
+     * Normally the runtime checks such as liveness probes
+     * should take care of the process health but these are often
+     * overlooked. So this is a compromise between having checks
+     * in every application and adding hacks to exception
+     * handlers in the main loops, not punishing app developers
+     * despite them deserving it.
+     *
+     * @param Exception $ex
+     * @return bool
+     */
+    public function isExceptionDeadly($ex): bool
+    {
+        if (get_class($ex) == 'PDOException' && $ex->getCode() == 'HY000') {
+            // PostgreSQL PDO: SQLSTATE[HY000]: General error: 7 no connection to the server
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 }
