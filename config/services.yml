@@ -19,7 +19,7 @@ services:
       - method: setForceOutputToStdErr
         arguments: ['%allegro.console_logger.force_stderr%']
 
-  GoFinTech\Allegro\AllegroApp:
+  app:
     class: GoFinTech\Allegro\AllegroApp
     public: true
     synthetic: true
@@ -34,8 +34,4 @@ services:
 
   logger:
     alias: Psr\Log\LoggerInterface
-    public: true
-
-  app:
-    alias: GoFinTech\Allegro\AllegroApp
     public: true

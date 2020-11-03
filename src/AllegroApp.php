@@ -52,6 +52,8 @@ class AllegroApp
             $this->appDir = $this->findApplicationDir();
             $this->configLocator = new FileLocator(["{$this->appDir}/config", $this->appDir]);
             $this->container = $this->loadServiceDefinitions($this->configLocator);
+            $this->container->set('app', $this);
+            $this->container->set('GoFinTech\Allegro\AllegroApp', $this);
             $this->container->set(AllegroApp::class, $this);
         }
         catch (RuntimeException $ex) {
