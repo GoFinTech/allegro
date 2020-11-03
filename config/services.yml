@@ -19,6 +19,11 @@ services:
       - method: setForceOutputToStdErr
         arguments: ['%allegro.console_logger.force_stderr%']
 
+  GoFinTech\Allegro\AllegroApp:
+    class: GoFinTech\Allegro\AllegroApp
+    public: true
+    synthetic: true
+
   serializer:
     alias: Symfony\Component\Serializer\SerializerInterface
     public: true
@@ -31,3 +36,6 @@ services:
     alias: Psr\Log\LoggerInterface
     public: true
 
+  app:
+    alias: GoFinTech\Allegro\AllegroApp
+    public: true
