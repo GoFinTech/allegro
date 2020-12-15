@@ -47,7 +47,7 @@ class AllegroApp
      */
     public function __construct()
     {
-        $this->installErrorHandler();
+        self::installErrorHandler();
         try {
             $this->appDir = $this->findApplicationDir();
             $this->configLocator = new FileLocator(["{$this->appDir}/config", $this->appDir]);
@@ -110,9 +110,12 @@ class AllegroApp
     }
 
     /**
-     * Installs PHP error handler that raises exceptions by default
+     * Installs PHP error handler that raises exceptions by default.
+     * There is no need to call this method directly as it is called by AllegroApp automatically.
+     * However, it may be useful in scripts that do advanced initialization
+     * before running any AllegroApp.
      */
-    private function installErrorHandler(): void
+    public static function installErrorHandler(): void
     {
         set_error_handler([self::class, 'phpErrorHandler']);
     }
