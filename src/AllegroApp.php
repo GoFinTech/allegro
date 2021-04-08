@@ -3,7 +3,7 @@
 /*
  * This file is part of the Allegro framework.
  *
- * (c) 2019,2020 Go Financial Technologies, JSC
+ * (c) 2019-2021 Go Financial Technologies, JSC
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,6 +14,7 @@ namespace GoFinTech\Allegro;
 use ErrorException;
 use Exception;
 use GoFinTech\Allegro\Implementation\ConsoleLogger;
+use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Symfony\Component\Config\Exception\FileLocatorFileNotFoundException;
@@ -288,5 +289,27 @@ class AllegroApp
         else {
             return false;
         }
+    }
+
+    /**
+     * @param string $class
+     * @param $configSection
+     * @param $legacyConfigSection
+     * @return AllegroApp
+     * @internal For use with app implementations to handle constructor parameter logic.
+     */
+    public static function resolveConstructorParameters(string $class, &$configSection, $legacyConfigSection): AllegroApp
+    {
+        if (is_object($configSection) && $configSection instanceof AllegroApp) {
+            $app = $configSection;
+            $configSection = $legacyConfigSection;
+            if (!is_string($configSection))
+                throw new InvalidArgumentException("$class::_construct() legacy AllegroApp provided without config section name");
+            return $app;
+        }
+        if (is_string($configSection)) {
+            return new AllegroApp();
+        }
+        throw new InvalidArgumentException("$class::_construct() unsupported parameter combination");
     }
 }
